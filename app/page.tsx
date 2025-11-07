@@ -1,7 +1,12 @@
 import { FC } from "react"
+import { ChronoView } from "../components/chrono-view"
 
 const Page: FC = () => {
-  return <></>
+  return (
+    <>
+      <ChronoView />
+    </>
+  )
 }
 
 export default Page
