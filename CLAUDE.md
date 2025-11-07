@@ -42,17 +42,38 @@ pnpm typecheck          # Run TypeScript compiler check
 ## Current Implementation Notes
 
 The project is in early development:
-- `ChronoView` component references a `<Chrono>` component that needs implementation
+- Custom `Chrono` timeline component implemented (no external library dependency)
 - Timeline functionality uses mock WWII historical data
-- No timeline library is currently installed (consider `react-chrono` or similar)
+- Supports both point-in-time events and date ranges
 - Core timeline creation and sharing features are not yet implemented
 
 ## Development Workflow
 
 When implementing timeline features:
-1. Install a timeline library (likely `react-chrono` based on component naming)
-2. Complete the `Chrono` component implementation in `components/`
-3. Replace mock data with user-generated timeline data
-4. Implement data persistence and sharing functionality
+1. Use the custom `Chrono` component in `components/chrono.tsx`
+2. Replace mock data with user-generated timeline data
+3. Implement data persistence and sharing functionality
 
 Always run `pnpm typecheck` and `pnpm lint` before committing changes.
+
+## Styling Guidelines
+
+**CSS Implementation:**
+- Use inline styles with React's `style` prop instead of external CSS files or CSS-in-JS
+- Sort CSS properties alphabetically for consistency and readability
+- Prefer inline styles for component-specific styling to avoid CSS conflicts
+- Use conditional styling based on component props and state
+
+**Example:**
+```tsx
+<div
+  style={{
+    backgroundColor: theme.primary,
+    borderRadius: "8px",
+    padding: "20px",
+    position: "relative"
+  }}
+>
+```
+
+This approach ensures styles are scoped to components and eliminates the need for external CSS dependencies in static deployments.
