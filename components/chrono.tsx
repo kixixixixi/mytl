@@ -1,11 +1,10 @@
 "use client"
 
-import { FC } from "react"
+import { type FC, Fragment } from "react"
 
-type TimelineItem = {
+export type ChronoItem = {
   title: string
-  cardTitle: string
-  cardDetailedText?: string
+  detailedText?: string
   startDate: Date
   endDate?: Date
 }
@@ -16,24 +15,16 @@ type Theme = {
   titleColor: string
 }
 
-type FontSizes = {
-  cardTitle: string
-  cardText: string
-  title: string
-}
-
 type ChronoProps = {
-  items: TimelineItem[]
+  items: ChronoItem[]
   theme?: Theme
-  fontSizes?: FontSizes
-  cardHeight?: number
 }
 
 const formatDate = (dateInput: string | Date): string => {
   if (typeof dateInput === "string") {
     return dateInput
   }
-  return `${dateInput.getFullYear()}年${dateInput.getMonth() + 1}月`
+  return `${dateInput.getFullYear()}年${dateInput.getMonth()}月`
 }
 
 export const Chrono: FC<ChronoProps> = ({
@@ -43,12 +34,6 @@ export const Chrono: FC<ChronoProps> = ({
     cardBgColor: "#ffffff",
     titleColor: "#2d3748",
   },
-  fontSizes = {
-    cardTitle: "1rem",
-    cardText: "0.9rem",
-    title: "0.8rem",
-  },
-  cardHeight = 150,
 }) => {
   const sorted = items.toSorted(
     (i1, i2) => i1.startDate.getTime() - i2.startDate.getTime()
@@ -69,7 +54,7 @@ export const Chrono: FC<ChronoProps> = ({
       style={{
         height: "100%",
         overflowY: "auto",
-        padding: "20px",
+        padding: "1rem",
         width: "100%",
       }}
     >
@@ -97,7 +82,7 @@ export const Chrono: FC<ChronoProps> = ({
           const isLeft = index % 2 === 0
           const isRange = !!item.endDate
           return (
-            <>
+            <Fragment key={index}>
               {isRange ? (
                 <>
                   <div
@@ -162,7 +147,7 @@ export const Chrono: FC<ChronoProps> = ({
                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     marginLeft: isLeft ? 0 : "55%",
                     marginRight: isLeft ? "55%" : 0,
-                    minHeight: `${cardHeight}px`,
+                    minHeight: `150px`,
                     padding: "20px",
                     position: "relative",
                   }}
@@ -170,40 +155,38 @@ export const Chrono: FC<ChronoProps> = ({
                   <div
                     style={{
                       color: theme.titleColor,
-                      fontSize: fontSizes.title,
+                      fontSize: ".75rem",
                       fontWeight: 600,
-                      marginBottom: "8px",
                       opacity: 0.8,
                     }}
                   >
-                    {item.endDate && item.startDate && item.endDate
+                    {isRange
                       ? `${formatDate(item.startDate)} - ${formatDate(item.endDate)}`
-                      : item.title}
+                      : formatDate(item.startDate)}
                   </div>
                   <div
                     style={{
                       color: theme.titleColor,
-                      fontSize: fontSizes.cardTitle,
+                      fontSize: ".9rem",
                       fontWeight: 700,
                       lineHeight: 1.4,
-                      marginBottom: "12px",
                     }}
                   >
-                    {item.cardTitle}
+                    {item.title}
                   </div>
                   <div
                     style={{
                       color: theme.titleColor,
-                      fontSize: fontSizes.cardText,
+                      fontSize: ".75rem",
                       lineHeight: 1.6,
                       opacity: 0.9,
                     }}
                   >
-                    {item.cardDetailedText}
+                    {item.detailedText}
                   </div>
                 </div>
               </div>
-            </>
+            </Fragment>
           )
         })}
       </div>
